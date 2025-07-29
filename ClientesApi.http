@@ -1,0 +1,111 @@
+### =================================================================
+###           PRUEBAS PARA LA API DE CLIENTES
+### =================================================================
+
+### -----------------------------------------------------------------
+### Variables de Configuración
+### (Ajusta el puerto y la API Key según tu configuración)
+### -----------------------------------------------------------------
+@hostname = localhost
+@port = 5081
+@apiKey = oggjCDanxViJekh8ZBaYT1AvAleQwWCFCaBoneTem5U4Nf8jgcxLdf7d5eSw63zbbmD9kO371pQqqAfwaMbEXuo0PX4UBG10lIHDLYP1q7mgjeowPRyY1nWlZnQyDHaq
+@baseUrl = http://{{hostname}}:{{port}}/api
+
+### GET: Obtener todos los clientes
+GET {{baseUrl}}/Clientes
+X-API-KEY: {{apiKey}}
+
+### -------------------------------------------
+
+### -----------------------------------------------------------------
+### 1. POST - Crear un primer cliente
+### -----------------------------------------------------------------
+# @name createCliente1
+POST {{baseUrl}}/Clientes
+X-API-KEY: {{apiKey}}
+Content-Type: application/json
+
+{
+  "nombre": "Ana López",
+  "correoElectronico": "ana.lopez@correo.com",
+  "telefono": "555-001-001"
+}
+
+
+### -----------------------------------------------------------------
+### 2. POST - Crear un segundo cliente
+### -----------------------------------------------------------------
+# @name createCliente2
+POST {{baseUrl}}/Clientes
+X-API-KEY: {{apiKey}}
+Content-Type: application/json
+
+{
+  "nombre": "Carlos Fuentes",
+  "correoElectronico": "carlos.f@correo.com",
+  "telefono": "555-002-002"
+}
+
+
+### -----------------------------------------------------------------
+### 3. GET - Obtener la lista de todos los clientes
+### (Deberían aparecer Ana y Carlos)
+### -----------------------------------------------------------------
+GET {{baseUrl}}/Clientes
+X-API-KEY: {{apiKey}}
+
+
+### -----------------------------------------------------------------
+### 4. GET (por ID) - Obtener el primer cliente (ID = 1)
+### -----------------------------------------------------------------
+GET {{baseUrl}}/Clientes/7
+X-API-KEY: {{apiKey}}
+
+
+### -----------------------------------------------------------------
+### 5. PUT - Actualizar el primer cliente (ID = 1)
+### (Cambiamos el teléfono de Ana)
+### -----------------------------------------------------------------
+PUT {{baseUrl}}/Clientes/1
+X-API-KEY: {{apiKey}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "nombre": "Ana López",
+  "correoElectronico": "ana.lopez@correo.com",
+  "telefono": "555-111-UPDATED"
+}
+
+
+### -----------------------------------------------------------------
+### 6. DELETE - Eliminar el segundo cliente (ID = 2)
+### -----------------------------------------------------------------
+DELETE {{baseUrl}}/Clientes/2
+X-API-KEY: {{apiKey}}
+
+
+### -----------------------------------------------------------------
+### 7. GET - Obtener todos los clientes de nuevo
+### (Ahora solo debería aparecer Ana López actualizada)
+### -----------------------------------------------------------------
+GET {{baseUrl}}/Clientes
+X-API-KEY: {{apiKey}}
+
+
+### =================================================================
+###           PRUEBAS DE ERRORES
+### =================================================================
+
+### -----------------------------------------------------------------
+### 8. GET (por ID) - Intentar obtener un cliente que no existe (404 Not Found)
+### -----------------------------------------------------------------
+GET {{baseUrl}}/Clientes/999
+X-API-KEY: {{apiKey}}
+
+
+### -----------------------------------------------------------------
+### 9. GET - Intentar obtener clientes con API Key incorrecta (401 Unauthorized)
+### -----------------------------------------------------------------
+GET {{baseUrl}}/Clientes
+X-API-KEY: {{apiKey}}-INCORRECTA
